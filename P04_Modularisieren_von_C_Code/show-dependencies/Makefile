@@ -7,6 +7,8 @@ SOURCES    := src/main.c
 # END-STUDENTS-TO-ADD-CODE
 TSTSOURCES := tests/tests.c
 
+SNP_TESTLIB := ../testlib
+
 include $(SNP_SHARED_MAKEFILE)
 
 

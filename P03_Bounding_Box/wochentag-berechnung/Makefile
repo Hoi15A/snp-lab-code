@@ -4,4 +4,6 @@ TARGET     := bin/weekday
 SOURCES    := src/main.c
 TSTSOURCES := tests/tests.c
 
+SNP_TESTLIB := ../../testlib
+
 include $(SNP_SHARED_MAKEFILE)

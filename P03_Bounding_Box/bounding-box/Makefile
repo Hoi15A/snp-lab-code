@@ -5,4 +5,6 @@ SOURCES    := src/main.c
 TSTSOURCES := tests/tests.c
 LIBS       := -lm
 
+SNP_TESTLIB := ../../testlib
+
 include $(SNP_SHARED_MAKEFILE)
