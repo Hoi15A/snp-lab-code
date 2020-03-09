@@ -1,3 +1,3 @@
-#!/bin/sh
+#!/bin/bash
 
-date -u +"%Y-%m-%dT%H:%M:%SZ" | qrencode -t ASCII
+qrencode -t ASCII $(date -u +"%Y-%m-%dT%H:%M:%SZ")

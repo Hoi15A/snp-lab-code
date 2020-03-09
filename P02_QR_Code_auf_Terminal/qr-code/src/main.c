@@ -16,20 +16,28 @@
 #include <stdlib.h>
 
 // define local macros
-// BEGIN-STUDENTS-TO-ADD-CODE
-
-
-// END-STUDENTS-TO-ADD-CODE
+#define RESET "\033[0m\n"
+#define BLACK "\033[40m "
+#define WHITE "\033[47m "
 
 /**
  * @brief   main function
  * @returns always success (0)
  */
-int main()
-{
-	// BEGIN-STUDENTS-TO-ADD-CODE
+int main() {
+	(void)printf(RESET);
+	char c;
 
-
-	// END-STUDENTS-TO-ADD-CODE
+	while ((c = fgetc(stdin)) != EOF) {
+		if (c == '\n') {
+			(void)printf(RESET);
+		} else if (c == ' ') {
+			(void)printf(WHITE);
+		} else {
+			(void)printf(BLACK);
+		}
+	}
+	
+	(void)printf(RESET);
 	return EXIT_SUCCESS;
 }

@@ -24,58 +24,56 @@
 int main(int argc, const char* argv[]) {
 
 	if (argc < 2) {
-		printf("No arguments passed\n");
+		(void)printf(USAGE, argv[0]);
 		return EXIT_FAILURE;
 	}
 
 	char *ignored_text;
+	// string scanf instead
 	uint8_t num = strtol(argv[1], &ignored_text, 10);
 	
 
-	if (num < 1 || num > 255) {
-		printf("Input out of range 1-255: %s\n", argv[1]);
+	if (num < 0 || num > 255) {
+		(void)printf(USAGE, argv[0]);
 		return EXIT_FAILURE;
 	}
 	
 	if (argc == 2) {
 		
-		printf("unsigned: %4u (%#04x)\n", num, num);
-		printf("  signed: %4d (%#04x)\n", num, num); // How tf do you print signed hex
+		(void)printf("unsigned: %4u (%#04x)\n", num, num);
+		(void)printf("  signed: %4d (%#04x)\n", num, num);
 		uint8_t added = num + 255;
-		printf("    +255: %4u (%#04x)\n", added, added);
+		(void)printf("    +255: %4u (%#04x)\n", added, added);
 
-		// Pretty sure is wrong but dunno why
-		uint8_t ones = ~num;
-		printf("   one's: %4u (%#04x)\n", ones, ones);
-		uint8_t twos = ~(num + 1);
-		printf("   two's: %4u (%#04x)\n", twos, twos);
+		(void)printf("   one's: %4d (%#04x)\n", ~num, ~num);
+		(void)printf("   two's: %4d (%#04x)\n", ~num + 1, ~num + 1);
 
 	} else if (argc == 3) {
 		
 		uint8_t bit = strtol(argv[2], &ignored_text, 10);
 		if (bit < 0 || bit > 7) {
-			printf("Input out of range 0-7: %s\n", argv[1]);
+			(void)printf(USAGE, argv[0]);
 			return EXIT_FAILURE;
 		}
 
 
-		printf("               dec   hex   oct\n");
-		printf("your input   : %3d   %#04x   %#04o\n", num, num, num);
+		(void)printf("               dec   hex   oct\n");
+		(void)printf("your input   : %3d  0x%02x  %#04o\n", num, num, num);
 
 		if (num & (1<<(bit))) {
-			printf("bit %d is set.\n", bit);
+			(void)printf("bit %d is set.\n", bit);
 		} else {
-			printf("bit %d is not set.\n", bit);
+			(void)printf("bit %d is not set.\n", bit);
 		}
 		
 		uint8_t cleared = num & ~(1UL << bit);
-		printf("bit 2 cleared: %3d   %#04x   %#04o\n", cleared, cleared, cleared);
+		(void)printf("bit %d cleared: %3d  0x%02x  %#04o\n", bit, cleared, cleared, cleared);
 
 		uint8_t set = num | 1UL << bit;
-		printf("bit 2 set    : %3d   %#04x   %#04o\n", set, set, set);
+		(void)printf("bit %d set    : %3d  0x%02x  %#04o\n", bit, set, set, set);
 
 		uint8_t flip = num ^ 1UL << bit;
-		printf("bit 2 flipped: %3d   %#04x   %#04o\n", flip, flip, flip);
+		(void)printf("bit %d flipped: %3d  0x%02x  %#04o\n", bit, flip, flip, flip);
 	} else {
 		return EXIT_FAILURE;
 	}
