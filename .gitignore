@@ -54,5 +54,8 @@ dkms.conf
 # Compiler binary output
 bin
 
-# Testlib tests directory
+# Testing related directories
 testlib/tests
+**/tests/runtest
+**/tests/stderr.txt
+**/tests/stdout.txt
