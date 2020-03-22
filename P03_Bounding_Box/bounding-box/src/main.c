@@ -20,21 +20,28 @@
 /// @brief point of two coordinate axes
 // BEGIN-STUDENTS-TO-ADD-CODE
 
-
+typedef struct Point { // Dont quite understand what "Point" means here when i define it -> Ask
+    double x, y;
+} point_t;
 
 // END-STUDENTS-TO-ADD-CODE
 
 /// @brief box with an origin point and a dimension w and h
 // BEGIN-STUDENTS-TO-ADD-CODE
 
-
+typedef struct Box {
+    point_t p;
+    double w, h;
+} box_t;
 
 // END-STUDENTS-TO-ADD-CODE
 
 /// @brief triangle given by three points a, b, and c
 // BEGIN-STUDENTS-TO-ADD-CODE
 
-
+typedef struct Triangle {
+    point_t a, b, c;
+} triangle_t;
 
 // END-STUDENTS-TO-ADD-CODE
 
@@ -47,7 +54,15 @@
  */
 // BEGIN-STUDENTS-TO-ADD-CODE
 
-
+static int compare_double(double a, double b) {
+    if (fabs(a-b) <= 0.05) {
+        return 0;
+    } else if (a < b) {
+        return -1;
+    } else {
+        return 1;
+    }
+}
 
 // END-STUDENTS-TO-ADD-CODE
 
@@ -60,7 +75,9 @@
  */
 // BEGIN-STUDENTS-TO-ADD-CODE
 
-
+static int compare_area(box_t a, box_t b) {
+    return compare_double(a.w * a.h, b.w * b.h);
+}
 
 // END-STUDENTS-TO-ADD-CODE
 
@@ -72,7 +89,9 @@
  */
 // BEGIN-STUDENTS-TO-ADD-CODE
 
-
+static int is_zero_area(box_t box) {
+    return compare_double(box.h * box.w, 0) == 0;
+}
 
 // END-STUDENTS-TO-ADD-CODE
 
@@ -88,7 +107,18 @@
  */
 // BEGIN-STUDENTS-TO-ADD-CODE
 
-
+static box_t triangle_bounding_box(triangle_t t) {
+    double minX = fmin(t.a.x, fmin(t.b.x, t.c.x));
+    double minY = fmin(t.a.y, fmin(t.b.y, t.c.y));
+    double maxX = fmax(t.a.x, fmax(t.b.x, t.c.x));
+    double maxY = fmax(t.a.y, fmax(t.b.y, t.c.y));
+    box_t box;
+    box.p.x = minX;
+    box.p.y = minY;
+    box.w = maxX - minX;
+    box.h = maxY - minY;
+    return box;
+}
 
 // END-STUDENTS-TO-ADD-CODE
 
