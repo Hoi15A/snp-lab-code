@@ -14,16 +14,15 @@ include $(SNP_SHARED_MAKEFILE)
 
 # DEPFILES :=  ... define a list of png file names: %.c -> %.c.png
 # BEGIN-STUDENTS-TO-ADD-CODE
-
+DEPFILES := $(SOURCES:%.c=%.c.png)
 
 # END-STUDENTS-TO-ADD-CODE
 
 
 
-# define dep target as .PHONEY
+# define dep target as .PHONY
 # BEGIN-STUDENTS-TO-ADD-CODE
-
-
+.PHONY: dep
 # BEGIN-STUDENTS-TO-ADD-CODE
 
 
@@ -31,7 +30,8 @@ include $(SNP_SHARED_MAKEFILE)
 # define dep target depending on FULLTARGET and DEPFILES above
 # action: echo some text telling that the target is done using $@ - the echo command shall not be echoed before execution
 # BEGIN-STUDENTS-TO-ADD-CODE
-
+dep: $(FULLTARGET) $(DEPFILES)
+	@echo "Target is done using $@"
 
 # BEGIN-STUDENTS-TO-ADD-CODE
 
@@ -40,8 +40,8 @@ include $(SNP_SHARED_MAKEFILE)
 # define new suffix rule for %.png depending on %.dot
 # action: dot -Tpng $< >$@ || $(RM) $@
 # BEGIN-STUDENTS-TO-ADD-CODE
-
-
+%.png: %.dot
+	dot -Tpng $< >$@ || $(RM) $@
 # BEGIN-STUDENTS-TO-ADD-CODE
 
 
@@ -49,8 +49,8 @@ include $(SNP_SHARED_MAKEFILE)
 # define new suffix rule for %.dot depending on %.dep
 # action: call $(TARGET) $(@:.dot=) <$< >$@ || $(RM) $@
 # BEGIN-STUDENTS-TO-ADD-CODE
-
-
+%.dot: %.dep
+	$(TARGET) $(@:.dot=) <$< >$@ || $(RM) $@
 # BEGIN-STUDENTS-TO-ADD-CODE
 
 
