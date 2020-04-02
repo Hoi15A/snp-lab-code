@@ -37,9 +37,11 @@ static size_t dependencies(file_t files[], size_t len, size_t curr)
 			// Write to stdout "  file -> include;\n" where file and include are the DOT node names of the respective files
 			// BEGIN-STUDENTS-TO-ADD-CODE
 
-
-
-
+			printf("  ");
+			print_node(files[curr]);
+			printf(" -> ");
+			print_node(files[file]);
+			printf(";\n");
 
 
 			// END-STUDENTS-TO-ADD-CODE
@@ -63,10 +65,13 @@ void output_dot(const data_t data)
 		// Write to stdout "  file [label=\"name\"];\n" where file is the DOT node name and name is the file name
 		// BEGIN-STUDENTS-TO-ADD-CODE
 
+		printf("  ");
+		print_node(data.files[file]);
+		printf(" ");
+		printf("[label=\"");
+		printf(data.files[file].name);
+		printf("\"];\n");
 
-
-
-		
 		// END-STUDENTS-TO-ADD-CODE
 	}
 	// directory clusters
@@ -78,9 +83,9 @@ void output_dot(const data_t data)
 				// Write to stdout "    file;\n" where file is the DOT node name
 				// BEGIN-STUDENTS-TO-ADD-CODE
 
-
-
-
+				printf("    ");
+				print_node(data.files[file]);
+				printf(";\n");
 
 				// END-STUDENTS-TO-ADD-CODE
 			}
