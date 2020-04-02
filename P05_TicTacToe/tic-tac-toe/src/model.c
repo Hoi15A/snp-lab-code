@@ -28,12 +28,11 @@ static void set_state(model_t *instance, model_pos_t pos, model_state_t state)
     // Instructions to the students:
     // set the field of the board to the new state
     // BEGIN-STUDENTS-TO-ADD-CODE
+    model_t model = *instance;
 
+    model.board[pos.row][pos.col] = state;
 
-    
-
-
-    
+    *instance = model;
     // END-STUDENTS-TO-ADD-CODE
 }
 
@@ -52,12 +51,20 @@ void model_init(model_t *instance)
     // set all fields of the board to model_state_none
     // BEGIN-STUDENTS-TO-ADD-CODE
 
+    model_t mod;
+    mod.board[0][0] = model_state_none;
+    mod.board[0][1] = model_state_none;
+    mod.board[0][2] = model_state_none;
+    mod.board[1][0] = model_state_none;
+    mod.board[1][1] = model_state_none;
+    mod.board[1][2] = model_state_none;
+    mod.board[2][0] = model_state_none;
+    mod.board[2][1] = model_state_none;
+    mod.board[2][2] = model_state_none;
 
+    *instance = mod;
 
-
-
-
-    // END-STUDENTS-TO-ADD-CODE
+	// END-STUDENTS-TO-ADD-CODE
 }
 
 // public API function which is documented in the header file.
@@ -70,8 +77,10 @@ model_state_t model_get_state(model_t *instance, model_pos_t pos)
     // replace the stub implementation my access to the field at the given position.
     // BEGIN-STUDENTS-TO-ADD-CODE
 
+    // >>>>Feels kinda jank to redeclare instaead of just using instance<<<<
+    model_t model = *instance;
 
-    return model_state_none; // stub 
+    return model.board[pos.row][pos.col]; // stub 
 
 
     // END-STUDENTS-TO-ADD-CODE
@@ -134,22 +143,27 @@ model_state_t model_get_winner(model_t *instance)
 // public API function which is documented in the header file.
 int model_can_move(model_t *instance)
 {
+    int can_move = 0;
     assert(instance);
     if (model_get_winner(instance) == model_state_none) {
         // Instructions to the students:
         // scan all fields: return 1 with first field which equals model_state_none
         // BEGIN-STUDENTS-TO-ADD-CODE
-
-
-
-
-
-
-
-
+        
+        model_t model = *instance;
+        for (size_t i = 0; i < 3; i++)
+        {
+            for (size_t j = 0; j < 3; j++)
+            {
+               if (model.board[i][j] == model_state_none)
+               {
+                   can_move = 1;
+               }
+            }
+        }
         // END-STUDENTS-TO-ADD-CODE
     }
-    return 0;
+    return can_move;
 }
 
 // public API function which is documented in the header file.
