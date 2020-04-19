@@ -1,4 +1,4 @@
-SNP_SHARED_MAKEFILE := $(if $(SNP_SHARED_MAKEFILE),$(SNP_SHARED_MAKEFILE),"~/snp/shared.mk")
+SNP_SHARED_MAKEFILE := $(if $(SNP_SHARED_MAKEFILE),$(SNP_SHARED_MAKEFILE),../../shared.mk)
 
 TARGET     := bin/personen-verwaltung
 # BEGIN-STUDENTS-TO-ADD-CODE
@@ -7,6 +7,7 @@ MODULES    :=
 SOURCES    := src/main.c $(MODULES)
 TSTSOURCES := tests/tests.c $(MODULES)
 
+SNP_TESTLIB := ../../testlib
 
 include $(SNP_SHARED_MAKEFILE)
 

@@ -107,12 +107,9 @@ static int eval_unary(eval_t *instance, eval_op_t op)
         return 1;
     case OP_INV:
         // 1. implement the ~ operator analogous to the - sign operator above
-        // BEGIN-STUDENTS-TO-ADD-CODE
-
-
-
-
-        // END-STUDENTS-TO-ADD-CODE
+        v = stack_pop(instance->stack);
+        stack_push(instance->stack, ~v);
+        return 1;
     default:
         break;
     }
@@ -155,44 +152,34 @@ static int eval_binary(eval_t *instance, eval_op_t op)
         return 1;
     case OP_BIT_OR:
         // 1. implement the | operator analogous to the * operator above
-        // BEGIN-STUDENTS-TO-ADD-CODE
-
-
-
-
-        // END-STUDENTS-TO-ADD-CODE
+        b = stack_pop(instance->stack);
+        a = stack_pop(instance->stack);
+        stack_push(instance->stack, a | b);
+        return 1;
     case OP_BIT_XOR:
         // 1. implement the ^ operator analogous to the * operator above
-        // BEGIN-STUDENTS-TO-ADD-CODE
-
-
-
-
-        // END-STUDENTS-TO-ADD-CODE
+        b = stack_pop(instance->stack);
+        a = stack_pop(instance->stack);
+        stack_push(instance->stack, a ^ b);
+        return 1;
     case OP_BIT_AND:
         // 1. implement the & operator analogous to the * operator above
-        // BEGIN-STUDENTS-TO-ADD-CODE
-
-
-
-
-        // END-STUDENTS-TO-ADD-CODE
+        b = stack_pop(instance->stack);
+        a = stack_pop(instance->stack);
+        stack_push(instance->stack, a & b);
+        return 1;
     case OP_BIT_LEFT:
         // 1. implement the << operator analogous to the * operator above
-        // BEGIN-STUDENTS-TO-ADD-CODE
-
-
-
-
-        // END-STUDENTS-TO-ADD-CODE
+        b = stack_pop(instance->stack);
+        a = stack_pop(instance->stack);
+        stack_push(instance->stack, a << b);
+        return 1;
     case OP_BIT_RIGHT:
         // 1. implement the >> operator analogous to the * operator above
-        // BEGIN-STUDENTS-TO-ADD-CODE
-
-
-
-
-        // END-STUDENTS-TO-ADD-CODE
+        b = stack_pop(instance->stack);
+        a = stack_pop(instance->stack);
+        stack_push(instance->stack, a >> b);
+        return 1;
     default:
         break;
     }
