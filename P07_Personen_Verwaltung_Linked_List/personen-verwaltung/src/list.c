@@ -3,10 +3,18 @@
 #include "list.h"
 
 // clear list
-void list_clear(node_t *instance);
+void list_clear(node_t* instance) {
+    node_t* current = instance->next;
+    while (current) {
+        node_t* tmp = current;
+        current = current->next;
+        free(tmp);
+    }
+    instance->next = NULL;
+};
 
 // insert into list
-void list_insert(node_t *instance, person_t person) {
+void list_insert(node_t* instance, person_t person) {
 	node_t* last = instance;
 	node_t* current = instance->next;
 
@@ -42,5 +50,35 @@ void list_insert(node_t *instance, person_t person) {
 
 
 // remove from list
-void list_remove(node_t *instance, person_t *person);
+void list_remove(node_t* instance, person_t person) {
+    node_t *current = instance;
+    node_t *last;
+
+    if (!current->next) {
+        return; // if already empty
+    }
+
+    last = current;
+    current = current->next;
+
+    while (current) {
+
+        if (person_compare(&current->content, &person) == 0)
+        {
+            // destroy current and remove
+            if (current->next) {
+                last->next = current->next;
+            }
+            else {
+                last->next = NULL;
+            }
+            free(current);
+            return;
+        }
+        else {
+            last = current;
+            current = current->next;
+        }
+    }
+};
 

@@ -137,7 +137,7 @@ void clear(node_t* people) {
     list_clear(people);
 }
 
-void mgmt_show(node_t* people) {
+void show(node_t* people) {
     node_t* current = people->next;
     size_t len = 0;
     printf("People Management - Linked List\n");

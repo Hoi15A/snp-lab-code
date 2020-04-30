@@ -9,12 +9,12 @@ typedef struct node {
 } node_t;
 
 // clear list
-void list_clear(node_t *instance);
+void list_clear(node_t* instance);
 
 // insert into list
-void list_insert(node_t *instance, person_t person);
+void list_insert(node_t* instance, person_t person);
 
 // remove from list
-void list_remove(node_t *instance, person_t *person);
+void list_remove(node_t* instance, person_t person);
 
 #endif // _LIST_H_
