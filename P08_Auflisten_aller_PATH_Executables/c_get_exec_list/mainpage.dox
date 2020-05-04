@@ -1,0 +1,8 @@
+/**
+ * @mainpage SNP - P08: C implementation of P01-Bash get_exec_list_arg.sh
+ *
+ * @section Purpose
+ *
+ * This is a lab on POSIX file and directory attribute access.
+ *
+ */
