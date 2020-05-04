@@ -1,17 +1,22 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <assert.h>
 #include "list.h"
 
 // clear list
 void list_clear(node_t* instance) {
+    assert(instance);
+
     node_t* current = instance->next;
     while (current) {
         node_t* tmp = current;
         current = current->next;
         free(tmp);
     }
-    instance->next = NULL;
-};
+    if(instance->next != NULL) {
+        instance->next = NULL;
+	}
+}
 
 // insert into list
 void list_insert(node_t* instance, person_t person) {
@@ -42,8 +47,8 @@ void list_insert(node_t* instance, person_t person) {
         last->next = new_node;
         new_node->next = NULL;
     } else {
-        node_t *old_next = last->next;
-        new_node->next = old_next;
+        node_t *next = last->next;
+        new_node->next = next;
         last->next = new_node;
     }
 }
@@ -80,5 +85,5 @@ void list_remove(node_t* instance, person_t person) {
             current = current->next;
         }
     }
-};
+}
 
