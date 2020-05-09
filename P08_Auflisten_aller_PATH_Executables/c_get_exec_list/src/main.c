@@ -12,6 +12,7 @@
  * @brief Lab implementation
  */
 
+#include <linux/limits.h> // PATH_MAX
 #include <stdlib.h>   // getenv, malloc, free, EXIT_SUCCESS, NULL
 #include <string.h>   // strchr
 #include <stdio.h>    // printf, sprintf
@@ -29,10 +30,17 @@ static char *malloc_copy(const char *s)
 {
     char *p = NULL;
     // BEGIN-STUDENTS-TO-ADD-CODE
+    if (s == NULL) return NULL;
 
+    int len = strlen(s);
+    p = malloc(sizeof(char) * len);
 
-
-
+    if (p) {
+        strcpy(p, s);
+    } else {
+        printf("Memory allocation failed");
+        return NULL;
+    }
 
     // END-STUDENTS-TO-ADD-CODE
     return p;       
@@ -50,17 +58,17 @@ static size_t split_buffer_inplace(char buffer[], char sep)
 {
     size_t n = 0;
     // BEGIN-STUDENTS-TO-ADD-CODE
+    if(!buffer) {
+        return 0;
+    }
+    char rep = '\0', *temp = buffer;
+	while(temp = strchr(temp, sep)) {
+		*temp = rep;
+		n++;
+		temp++;
+	};
 
-
-
-
-
-
-
-
-
-
-    // END-STUDENTS-TO-ADD-CODE
+	// END-STUDENTS-TO-ADD-CODE
     return n;
 }
 
@@ -80,15 +88,32 @@ static void list_executables(size_t i, const char *path)
     //   fi
     const char *p = path && strlen(path) ? path : "."; // replace an empty path by "." as current directory to allow for appending /name
     // BEGIN-STUDENTS-TO-ADD-CODE
+    struct stat sb;
+    char tmp_path[PATH_MAX];
 
+    if (access(p, F_OK) == -1) {
+        return;
+    }
 
+    if (stat(p, &sb) == -1) {
+        fprintf(stderr, __FILE__ ": Failed to stat file (%s).\n", p);
+    }
 
+    if (S_ISDIR(sb.st_mode)) {
+        DIR *dir = opendir(p);
+        if (dir != NULL) {
+            struct dirent *entry;
+            while ((entry = readdir(dir))) {
+                size_t len = (strlen(p) + 1) + 1 + strlen(entry->d_name);
+                snprintf(tmp_path, len, "%s/%s", p, entry->d_name);
 
-
-
-
-
-
+                if (entry->d_type == DT_REG && access(tmp_path, X_OK) == 0) {
+                    printf("%ld:%s:%s\n", i, p, entry->d_name);
+                }
+            }
+            closedir(dir);
+        }
+    }
     // END-STUDENTS-TO-ADD-CODE
 }
 
