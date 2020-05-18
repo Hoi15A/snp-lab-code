@@ -33,12 +33,15 @@ int main(void) {
 
     // start teller machine
     printf("\nCoffee teller machine starting\n\n");
-
+    
     i = 0;
     while (i < ITERS) {
         printf("teller (%d): waiting for coin\n", i);
-        printf("       (%d): got coin\n", i);  
-        printf("       (%d): dispense coffee\n", i); 
+        sem_post(ready);
+		sem_wait(coin);
+		printf("       (%d): got coin\n", i);
+		printf("       (%d): dispense coffee\n", i);
+        sem_post(coffee);
         i++;
     }
 }

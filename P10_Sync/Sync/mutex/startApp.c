@@ -20,6 +20,8 @@
 #include "coffeeTeller.h"
 #include "customer.h"
 
+#define FATAL(M) do {perror(M); return EXIT_FAILURE;} while(0);
+
 //******************************************************************************
 // common data
 
@@ -37,11 +39,12 @@ int main(void) {
     cD.coinCount = 0;
     cD.selCount1 = 0;
     cD.selCount2 = 0;   
-    pthread_mutex_init(&(cD.lock), NULL);
+    if (pthread_mutex_init(&(cD.lock), NULL) != 0) FATAL("init failed");
 
     // start teller and customers now that everything is set up    
     pthr = pthread_create(&tellerThread, NULL, coffeeTeller, &cD);
-    assert(pthr == 0);    
+    assert(pthr == 0);
+    
     for (j = 0; j < CUSTOMERS; j++) {
         pthr = pthread_create(&(customerThreads[j]), NULL, customer, &cD);
         assert(pthr == 0);

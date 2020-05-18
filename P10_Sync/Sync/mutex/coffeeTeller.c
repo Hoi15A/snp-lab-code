@@ -17,6 +17,8 @@
 
 #include "commonDefs.h"
 
+#define FATAL(M) do {perror(M); return EXIT_FAILURE;} while(0);
+
 //******************************************************************************
 
 void *coffeeTeller(void* data) {
@@ -29,6 +31,7 @@ void *coffeeTeller(void* data) {
     
     i = 0;
     while (i < ITERATIONS) {
+        if (pthread_mutex_lock(&(cD->lock)) != 0) FATAL("Lock failed");
         if (cD->coinCount != cD->selCount1 + cD->selCount2) {
             printf("error c = %5d  s1 =%6d   s2 =%6d   diff: %4d\ti = %d\n", 
                    cD->coinCount, cD->selCount1, cD->selCount2, 
@@ -39,6 +42,7 @@ void *coffeeTeller(void* data) {
         }
         if (i%1000000 == 0) printf("working\n");
         i++;
+        if (pthread_mutex_unlock(&(cD->lock)) != 0) FATAL("Unlock failed");
     }
     pthread_exit(0);
 }
