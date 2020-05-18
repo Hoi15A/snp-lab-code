@@ -13,6 +13,8 @@
 
 #include "banking.h"
 
+#define FATAL(M) do {perror(M); return EXIT_FAILURE;} while(0);
+
 //******************************************************************************
 
 typedef struct account_struct_ {
@@ -61,16 +63,20 @@ void deleteBank(void) {
 long int withdraw(int branchNr, int accountNr, long int value) {
     int rv, tmp;
     rv = 0;
+    if (pthread_mutex_lock(&(Bank[branchNr].accounts[accountNr].acntLock)) != 0) FATAL("Lock failed");
     tmp = Bank[branchNr].accounts[accountNr].balance - value;
     if (tmp >= 0) {
         Bank[branchNr].accounts[accountNr].balance = tmp;
         rv = value;
     }
+    if (pthread_mutex_unlock(&(Bank[branchNr].accounts[accountNr].acntLock)) != 0) FATAL("Unlock failed");
     return rv;   
 }
 
 void deposit(int branchNr, int accountNr, long int value) {
+    if (pthread_mutex_lock(&(Bank[branchNr].accounts[accountNr].acntLock)) != 0) FATAL("Lock failed");
     Bank[branchNr].accounts[accountNr].balance += value;
+    if (pthread_mutex_unlock(&(Bank[branchNr].accounts[accountNr].acntLock)) != 0) FATAL("Unlock failed");
 }
 
 void transfer(int fromB, int toB, int accountNr, long int value) {
