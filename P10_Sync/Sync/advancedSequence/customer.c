@@ -36,13 +36,19 @@ int main(int argc, char *argv[]) {
     ready  = sem_open(READY_SEMAPHOR,  0);
 
     // start customer
+    sem_wait(myTurn);
     printf("Customer starting (%d)\n", myID);
-
+    sem_wait(ready);
     // now check the sum 
     for (i = 0; i < ITERS; i++) {
-        printf("\t\t\t\tcustomer(%d) put coin %d\n", myID, i); 
+        for(int i = 0; i < NUM_COIN; i++) {
+            printf("\t\t\t\tcustomer(%d) put coin %d\n", myID, i);
+            sem_post(coin); 
+        }
         printf("\t\t\t\tcustomer(%d) waiting for coffee %d\n", myID, i);
+        sem_wait(coffee);
         printf("\t\t\t\tcustomer(%d) got coffee %d\n", myID, i);
+        sem_post(myTurn);
         drinkingCoffee(myID);
     }
 }
