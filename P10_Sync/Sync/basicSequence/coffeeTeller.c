@@ -40,8 +40,8 @@ int main(void) {
         sem_post(ready);
 		sem_wait(coin);
 		printf("       (%d): got coin\n", i);
-		printf("       (%d): dispense coffee\n", i);
         sem_post(coffee);
+		printf("       (%d): dispense coffee\n", i);
         i++;
     }
 }
