@@ -15,13 +15,17 @@
 
 #define FATAL(M) do {perror(M); return EXIT_FAILURE;} while(0);
 
+
 /*
 
-5.2 a)
-    1.26s / 0.87s / 0.87s
-    2 & 4 sind nicht richtig synchronisiert.
+5.3 a)
+    Die idee ist schlecht da sich die ausführungszeit verdoppelt und nicht viel mehr sicherheit bringt.
+
+5.3 b)
+    Macht wenig sinn, mehr locks heisst sicher nicht mehr performance.
 
 */
+
 
 //******************************************************************************
 
@@ -71,6 +75,7 @@ void deleteBank(void) {
 long int withdraw(int branchNr, int accountNr, long int value) {
     int rv, tmp;
     rv = 0;
+    if (pthread_mutex_lock(&(Bank[branchNr].branchLock)) != 0) FATAL("Lock failed");
     if (pthread_mutex_lock(&(Bank[branchNr].accounts[accountNr].acntLock)) != 0) FATAL("Lock failed");
     tmp = Bank[branchNr].accounts[accountNr].balance - value;
     if (tmp >= 0) {
@@ -78,13 +83,16 @@ long int withdraw(int branchNr, int accountNr, long int value) {
         rv = value;
     }
     if (pthread_mutex_unlock(&(Bank[branchNr].accounts[accountNr].acntLock)) != 0) FATAL("Unlock failed");
+    if (pthread_mutex_unlock(&(Bank[branchNr].branchLock)) != 0) FATAL("Unlock failed");
     return rv;   
 }
 
 void deposit(int branchNr, int accountNr, long int value) {
+    if (pthread_mutex_lock(&(Bank[branchNr].branchLock)) != 0) FATAL("Lock failed");
     if (pthread_mutex_lock(&(Bank[branchNr].accounts[accountNr].acntLock)) != 0) FATAL("Lock failed");
     Bank[branchNr].accounts[accountNr].balance += value;
     if (pthread_mutex_unlock(&(Bank[branchNr].accounts[accountNr].acntLock)) != 0) FATAL("Unlock failed");
+    if (pthread_mutex_unlock(&(Bank[branchNr].branchLock)) != 0) FATAL("Unlock failed");
 }
 
 void transfer(int fromB, int toB, int accountNr, long int value) {

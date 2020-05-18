@@ -14,13 +14,6 @@
 #include "mtimer.h"
 #include "mrandom.h"
 
-/*
-
-5.2 a)
-    1.26s / 0.87s / 0.87s
-    2 & 4 sind nicht richtig synchronisiert.
-
-*/
 
 //******************************************************************************
 // constant values
