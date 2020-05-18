@@ -14,6 +14,14 @@
 #include "mtimer.h"
 #include "mrandom.h"
 
+/*
+
+5.4 a)
+    Die transfert funktion ruft jeweils withdraw und deposit auf.
+    Es ist nicht garantiert, dass nach withdraw gleich deposit aufgerufen wird.
+
+*/
+
 //******************************************************************************
 // constant values
 

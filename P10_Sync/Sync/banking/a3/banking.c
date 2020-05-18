@@ -13,6 +13,8 @@
 
 #include "banking.h"
 
+#define FATAL(M) do {perror(M); return EXIT_FAILURE;} while(0);
+
 //******************************************************************************
 
 typedef struct account_struct_ {
@@ -73,9 +75,17 @@ void deposit(int branchNr, int accountNr, long int value) {
 }
 
 void transfer(int fromB, int toB, int accountNr, long int value) {
+    if (pthread_mutex_lock(&(bank[fromB].branchLock)) != 0) FATAL("Lock failed");
+    //if (pthread_mutex_lock(&(bank[fromB].accounts[accountNr].acntLock)) != 0) FATAL("Lock failed");
+    //if (pthread_mutex_lock(&(bank[toB].accounts[accountNr].acntLock)) != 0) FATAL("Lock failed");
     int money = withdraw(fromB, accountNr, value);
+    // LE SCHEDULING VOID
     deposit(toB, accountNr, money);
+    //if (pthread_mutex_unlock(&(bank[fromB].accounts[accountNr].acntLock)) != 0) FATAL("Unlock failed");
+    //if (pthread_mutex_unlock(&(bank[toB].accounts[accountNr].acntLock)) != 0) FATAL("Unlock failed");
+    if (pthread_mutex_unlock(&(bank[fromB].branchLock)) != 0) FATAL("Unlock failed");
 }
+//4 Threads no clue not working
 
 void checkAssets(void) {
     static long assets = 0;
