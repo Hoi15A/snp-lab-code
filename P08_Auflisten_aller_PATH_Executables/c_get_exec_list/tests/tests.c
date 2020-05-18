@@ -63,8 +63,9 @@ static void test_paths(void)
     snprintf(buf, PATH_SIZE, "4:../bin:%s\n", name);
     
     const char *out_txt[] =
-        { "1:.:runtest\n"
-          , buf
+        { "1:.:runtest\n",
+          "2::runtest\n",
+          buf
         };
     const char *err_txt[] = { NULL };
     // act
