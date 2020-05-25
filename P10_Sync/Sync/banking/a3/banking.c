@@ -74,6 +74,7 @@ void deposit(int branchNr, int accountNr, long int value) {
     bank[branchNr].accounts[accountNr].balance += value;
 }
 
+/*
 void transfer(int fromB, int toB, int accountNr, long int value) {
     if (pthread_mutex_lock(&(bank[fromB].branchLock)) != 0) FATAL("Lock failed");
     //if (pthread_mutex_lock(&(bank[fromB].accounts[accountNr].acntLock)) != 0) FATAL("Lock failed");
@@ -85,7 +86,20 @@ void transfer(int fromB, int toB, int accountNr, long int value) {
     //if (pthread_mutex_unlock(&(bank[toB].accounts[accountNr].acntLock)) != 0) FATAL("Unlock failed");
     if (pthread_mutex_unlock(&(bank[fromB].branchLock)) != 0) FATAL("Unlock failed");
 }
-//4 Threads no clue not working
+*/
+
+void transfer(int fromB, int toB, int accountNr, long int value) {
+    if (toB < fromB && pthread_mutex_lock(&bank[toB].branchLock) != 0) FATAL("Branch lock");
+    if (pthread_mutex_lock(&bank[fromB].branchLock) != 0) FATAL("Branch lock");
+    if (toB > fromB && pthread_mutex_lock(&bank[toB].branchLock) != 0) FATAL("Branch lock");
+
+    int money = withdraw(fromB, accountNr, value);
+    deposit(toB, accountNr, money);
+
+    if (pthread_mutex_unlock(&bank[fromB].branchLock) != 0) FATAL("Branch unlock");
+    if (toB != fromB && pthread_mutex_unlock(&bank[toB].branchLock) != 0) FATAL("Branch unlock");
+}
+
 
 void checkAssets(void) {
     static long assets = 0;
